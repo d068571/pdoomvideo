@@ -101,7 +101,7 @@
     const z = lerp(1, 1.08, ease(lt / 4.3));
     camBegin(960 + lt * 12, 540, z);
     sky();
-    sun(1600, 190, 70, t);
+    sun(1760, 170, 64, t);
     cloud(420, 200, 70); cloud(1250, 140, 50);
     peak(300, 330, 760, 420, ROCK, 1, { snow: .4 });
     peak(1500, 360, 760, 460, ROCK, 5, { snow: .38 });
@@ -115,7 +115,7 @@
     // Clawd marches in and throws its arms up at the view
     const x = kf(lt, [[0, -150], [2.2, 760]], x => x), arrived = lt > 2.2;
     const m = move(arrived ? 'roof' : 'walk', t);
-    hiker(x, 930, 24, { ...m, dx: 0, ...mood(t, [[0, 'normal'], [2.25, 'spark', 'spark']]), mouth: arrived ? 'O' : 'smile' });
+    hiker(x, 935, 32, { ...m, dx: 0, ...mood(t, [[0, 'normal'], [2.25, 'spark', 'spark']]), mouth: arrived ? 'O' : 'smile' });
     camEnd();
     // title card
     letter('CLAWD GOES HIKING', 960, 260 - 10 * wob(t, .5), 118, PAL.cream, { pop: (lt - .4) * 2.5, rot: -.04, stroke: RED_DK });
@@ -174,7 +174,7 @@
     // Clawd sprints in, a second too late
     const cx = kf(lt, [[1.6, -250], [3.05, 780]], easeOut), arrived = lt > 3.05;
     const m = move(arrived ? 'idle' : 'run', t);
-    hiker(cx, 930, 22, { ...m, dx: 0, rot: arrived ? -.05 * Math.exp(-(lt - 3.05) * 6) : m.rot,
+    hiker(cx, 935, 27, { ...m, dx: 0, rot: arrived ? -.05 * Math.exp(-(lt - 3.05) * 6) : m.rot,
       ...mood(t, [[4.3, 'narrow', 'sweat'], [4.3 + 3.1, 'scared', '!'], [4.3 + 3.7, 'closed', 'sweat']]), mouth: arrived ? 'wobble' : 'o', aL: arrived ? 1.3 : m.aL, aR: arrived ? 1.2 : m.aR });
     camEnd();
     sfx('PSSHT', 1300, 380, 80, PAL.cream, lt - 2.2, { rot: .08 });
@@ -231,17 +231,17 @@
     signpost(1300, slopeY(1300) + 20, t);
     // Clawd, slowly, sweating
     const x = 760 + lt * 30, passK = seg(lt, 1.85, 2.3);
-    hiker(x, slopeY(x) + 20, 21, { walk: lt * .7, dy: -Math.abs(Math.sin(lt * 2.2)) * .3, rot: -.2 + passK * .25 * Math.exp(-(lt - 2.3) * 2), aL: -.3, aR: -.2,
+    hiker(x, slopeY(x) + 20, 25, { walk: lt * .7, dy: -Math.abs(Math.sin(lt * 2.2)) * .3, rot: -.2 + passK * .25 * Math.exp(-(lt - 2.3) * 2), aL: -.3, aR: -.2,
       ...mood(t, [[8.6, 'narrow', 'sweat'], [8.6 + 1.95, 'swirl', '!?'], [8.6 + 3.4, 'closed', 'sweat']]), mouth: lt < 1.95 ? 'wobble' : 'O' });
     // Grandma: whooshes up the path past Clawd
     const gx = kf(lt, [[.8, -250], [3.2, 2300]], x => x);
     if (lt > .7 && lt < 3.3) {
       for (let k = 1; k < 5; k++) inkLine([[gx - 60 - k * 70, slopeY(gx) - 60 - k * 40 + k * 18], [gx - 150 - k * 110, slopeY(gx - 150 - k * 110) - 60 + k * 18]], .8, PAL.cream, 'ink', 0);
       paint(ellPts(gx - 90, slopeY(gx - 90) + 10, 70, 30, 14), { fill: '#C9A876', fillOp: 120, bleed: .2, ink: null });
-      granny(gx, slopeY(gx) + 20, 13, t, lt * 3.2);
+      granny(gx, slopeY(gx) + 20, 17, t, lt * 3.2);
     }
     camEnd();
-    sfx('Grüezi!', gx + 40, slopeY(gx) - 270, 70, PAL.cream, lt - 1.6, { rot: -.15, life: 1.2 });
+    sfx('Grüezi!', gx + 40, slopeY(gx) - 330, 70, PAL.cream, lt - 1.6, { rot: -.15, life: 1.2 });
     sfx('ZOOM', 700, 330, 90, PAL.ochre, lt - 2.0, { rot: -.2, life: 1 });
   }
 
