@@ -56,3 +56,22 @@ node render.mjs --encode --out=out/pdoom.mp4   # join the frames and the song in
 ```
 
 If Chrome isn't installed at the default Windows path, add `--chrome=<path to chrome>`.
+
+## Spin-off: *Clawd goes hiking*
+
+A 27-second test short on the same engine: Clawd hikes the Swiss Alps and meets six Swiss clichés, one per shot. The train leaves at 08:00:00 sharp, a grandma sprints past on the trail, the cows wear enormous bells, the pocket knife unfolds into an alphorn, Clawd yodels from the summit, and the summit coffee costs CHF 14.50.
+
+| Path | What it is |
+|---|---|
+| [`swiss.html`](swiss.html) | The page the short is painted in (it uses local copies of the fonts in `assets/fonts/`) |
+| [`src/swiss/show.js`](src/swiss/show.js) | Its timeline: shot registry, brush wipes and narrator captions |
+| [`src/swiss/alps.js`](src/swiss/alps.js) | The six shots |
+| [`src/swiss/soundtrack.mjs`](src/swiss/soundtrack.mjs) | Synthesizes the oompah soundtrack and sound effects into `assets/swiss.wav` |
+
+```bash
+node src/swiss/soundtrack.mjs
+node render.mjs --page=swiss.html --dur=27 --dir=out/swiss_frames --frames=0:27 --workers=4
+node render.mjs --encode --dir=out/swiss_frames --audio=assets/swiss.wav --out=out/swiss.mp4
+```
+
+On a Linux machine without a GPU, add `--no-sandbox --gl=swiftshader --lite` to the render command. `--lite` swaps the watercolour fills for flat washes, which renders hundreds of times faster at the cost of some paper texture.

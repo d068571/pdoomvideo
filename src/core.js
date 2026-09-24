@@ -94,8 +94,11 @@ function starPts(cx, cy, r, inner = .38, n = 4, rot = -Math.PI / 2) {
 }
 
 // ---------- paint wrapper ----------
+// ?lite swaps watercolour fills for flat washes: a much cheaper draft look for machines without a GPU.
+const LITE = typeof location !== 'undefined' && location.search.includes('lite');
 // One call = one painted shape: optional flat wash, optional watercolor fill, optional hatch, optional ink outline.
 function paint(pts, o = {}) {
+  if (LITE && o.fill) o = o.wash ? { ...o, fill: null, hatch: null } : { ...o, fill: null, hatch: null, wash: o.fill, washOp: (o.fillOp ?? 170) * .6 };
   if (o.wash || o.fill || o.hatch) {
     if (o.wash) brush.wash(o.wash, o.washOp ?? 255); else brush.noWash();
     if (o.fill) { brush.fill(o.fill, o.fillOp ?? 170); brush.fillBleed(o.bleed ?? .1); brush.fillTexture(o.tex ?? .4, o.border ?? .35); } else brush.noFill();
@@ -180,7 +183,8 @@ function defineBrushes() {
 
 // ---------- frame ----------
 async function setup() {
-  createCanvas(W, H, WEBGL); pixelDensity(1); noLoop();
+  // ?density=0.5 paints at half resolution (for quick drafts on machines without a GPU); output stays 1920x1080.
+  createCanvas(W, H, WEBGL); pixelDensity(+(new URLSearchParams(location.search).get('density') || 1)); noLoop();
   brush.scaleBrushes(5); defineBrushes();
   paperG = makePaper(); grainC = makeGrain(); letG = createGraphics(W, H); letG.pixelDensity(1);
   outC = document.getElementById('out'); outX = outC.getContext('2d');
