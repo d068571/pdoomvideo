@@ -1,3 +1,6 @@
 node_modules/
 out/
 assets/source.mp4
+
+# local clone of AI-Futures-Project/aifm-public (recreate with aifm-playground/setup.sh)
+_ext/
