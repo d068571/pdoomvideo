@@ -1,0 +1,62 @@
+<h1>METR's Anthropic assessment, run through the AI Futures Model</h1>
+<p class="sub">Source: METR, <a href="https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/">Independent Assessment of AI R&amp;D Acceleration at Anthropic in October 2026</a> (5 Nov 2026). Model: <code>AI-Futures-Project/aifm-public</code> @ <code>1c40ecd</code>, the code behind aifuturesmodel.com. No model code was changed; only parameter values, AC-anchor inputs and evidence weighting were.</p>
+
+[[BOTTOM_LINE]]
+
+<h2>1. What the report gives us (extracted data)</h2>
+<p>Numbers in the text were taken verbatim. Per-model points were read off the published charts by pixel measurement, because METR does not publish the tables. As a check, refitting METR's kinked trend to my read-off AECI points gives +15.4 → +29.2 points/yr, a 1.89x ratio, against METR's +15 → +29 and 1.9x. Most of the evidence METR found most informative was redacted by Anthropic and is unavailable to anyone outside.</p>
+<div class="tw"><table><thead><tr><th>Finding</th><th>Value in report</th><th>How it enters the model</th></tr></thead><tbody>
+<tr><td>AECI (benchmark-capability) acceleration since Oct 7 2025, Anthropic models incl. internal-only</td><td><b>1.9x</b> [95% CI 1.5–2.8]; slopes +15 → +29 AECI pts/yr. Robustness checks 1.1–2.9x; all-developer frontier 1.4x (+17 → +24/yr); Haiku 5.5 system card 1.7x</td><td>Compared with the model's <i>total</i> acceleration: the ratio of capability-growth slopes, Oct 2025–Oct 2026 vs Mar 2024–Oct 2025, with the same kinked OLS fit. In this model ECI is linear in progress, so OOM rates and ECI rates scale alike.</td></tr>
+<tr><td>METR's overall judgement of current acceleration</td><td>≈<b>2x</b> as of Oct 2026; "would not be surprised" by 1.3x or 3x</td><td>Width of the evidence likelihood (treated as a 90% interval)</td></tr>
+<tr><td>Share of the acceleration due to AI</td><td>a majority, "perhaps ≈<b>80%</b>", substantial uncertainty</td><td>Converts total acceleration into METR's "acceleration due to AI" (current ÷ counterfactual-without-AI rate): 1.9x total → <b>1.61x</b> due to AI (1.3x → 1.23x; 3x → 2.14x). The model's analogue is its progress rate ÷ its human-only progress rate at Oct 2026. Share modelled as triangular(0.5, 0.8, 1.0).</td></tr>
+<tr><td>Training compute</td><td>acceleration "not due to an acceleration in the scale of training compute"</td><td>Consistency check on the input series: the model's training-compute growth is 0.56 → 0.58 OOM/yr, so no acceleration ✓. Input series left unchanged.</td></tr>
+<tr><td>Fully autonomous contributions</td><td>not yet "highly significant"; "signs of life", could occur soon</td><td>Hard constraint: <b>AC (full coding automation) not reached by 29 Oct 2026</b></td></tr>
+<tr><td>Bottlenecks</td><td>no significant bottlenecks found for the next 12 months (algorithms, training compute, experiment compute, data); low confidence</td><td>Sensitivity scenario S4: weak coding-labor bottleneck (<code>inf_labor_asymptote</code> 15 → 200, the 90th percentile of the model's own sampling range)</td></tr>
+<tr><td>Self-reported uplift (Slack polls and surveys; "very loose evidence")</td><td>1.2x (3.7 Sonnet, Feb 2025) → 12x (Model 4, Oct 2026); exponential fit 3.9x/yr. 7 points read off the chart</td><td>Fit of log₂(uplift − 1): <b>excess uplift doubles every 3.5 months</b> (website default: 5). Fitted level 7.7x in Aug 2026. Used in scenarios S2/S3 for <code>excess_uplift_doubling_time</code> and <code>serial_uplift_at_reference_date</code>.</td></tr>
+<tr><td>AECI level of the newest internal model</td><td>Model 4 = 178.6 (late Sep 2026)</td><td>Converted to the model's Epoch-ECI scale: AECI and Epoch ECI scores for 20 shared models give Epoch = 53.6 + 0.64·AECI for post-Oct-2025 models (0.81 over all). Model 4 → <b>167.5</b>; +29 AECI/yr → <b>18.5 Epoch pts/yr</b>. Used for the ECI AC anchor (S5/S6).</td></tr>
+<tr><td>Interviews</td><td>centered on ≈2x; Claude-coded quotes: 2 yes, 3 lean yes, 4 unclear, 0 lean no, 2 no</td><td>Qualitative support for the 1.6–2x targets; not used numerically</td></tr>
+</tbody></table></div>
+[[IMG:f1_aeci_evidence.png|Left: AECI of Anthropic models over time with METR's kinked fit (15.4 then 29.2 points per year). Right: AECI vs Epoch ECI for 20 shared models; slope 0.64 for recent models.]]
+
+<h2>2. First result: the website model sees no acceleration where METR sees 1.9x</h2>
+<p>Run with the website's default parameters (Daniel's 16 Aug 2026 medians), the model predicts that capability growth in Oct 2025–Oct 2026 is <b>0.96x</b> its Mar 2024–Oct 2025 rate. METR measured 1.9x. The model's AI-attributable acceleration in Oct 2026 is <b>1.15x</b>, against METR's ≈1.6x (Eli's and Brendan's presets: 1.12x and 1.13x). In the model's terms, METR is saying AI is doing more for AI R&amp;D today than the forecasters assumed.</p>
+<p>The second gap can be closed by changing parameters. The first cannot, with any parameter values I tried that keep AC after Oct 2026. Capability growth in this model is roughly training-compute growth (~0.6 OOM/yr, not affected by AI) plus software progress (~1.0 OOM/yr). Without AI, software progress <i>slows</i> over this window: human labor growth falls from 0.39 to 0.33 OOM/yr in the input data, and research stock outgrows research effort. So AI's effect first has to make up that decline. Even at METR's full 1.6x AI acceleration, net capability growth is only about 1.0x the historical rate. A grid over current uplift (2–12x), uplift doubling time (2.5–5 months) and the coding-labor bottleneck (15–1000x) topped out at <b>1.22x</b>, and only in combinations where AC happens before Oct 2026.</p>
+[[IMG:f2_acceleration_vs_metr.png|Dot plots: model total acceleration about 1.0 in every scenario vs METR band 1.5-2.8; AI-attributable acceleration can be matched at 1.61.]]
+[[IMG:f3_progress_rates.png|Capability growth rates 2024-2027 with and without AI for the default and METR-calibrated runs, with METR's 1.9x point far above both.]]
+<p>This is the report's most important implication for the model. Either (a) METR's AECI acceleration overstates the acceleration of the underlying capability the model tracks (METR lists reasons it might: benchmark overfitting, a historically slow Anthropic, the all-developer frontier showing only 1.4x, the cloglog link giving 1.1x), or (b) the model's assumptions about the without-AI baseline are too pessimistic for 2025–26. METR found that non-AI factors <i>added</i> about 20% of the acceleration, while the model has its no-AI growth falling. METR's own uncertainty covers (a). The rest of this analysis therefore uses the part of METR's evidence the model can represent, the AI-attributable acceleration, and keeps the total-acceleration measure as a diagnostic.</p>
+
+<h2>3. Single-trajectory scenarios</h2>
+<p>Each scenario starts from the website default and changes only the parameters listed. "Calibrated" means <code>serial_uplift_at_reference_date</code> (the AI serial coding-labor multiplier in Aug 2026, the first slider on the website) was solved by bisection so that the model's AI acceleration in Oct 2026 equals METR's.</p>
+[[SCEN_TABLE]]
+<ul>
+<li><b>S1, the central case:</b> matching 1.61x needs a serial coding uplift of <b>11.5x</b> in Aug 2026, against the default 2x. With the default compute bottleneck, extra coding labor buys little research output, so a large uplift is needed for a 1.6x effect. That is close to the 12x staff self-reports, though the two are not the same quantity. AC moves from Oct 2027 to <b>Jan 2027</b>, ASI from Dec 2028 to <b>Jul 2028</b>.</li>
+<li><b>Range:</b> METR's low end (1.3x total → 1.23x due to AI) needs only 2.7x uplift and moves AC to Jul 2027. METR's high end (3x → 2.14x) is <b>unreachable</b> under the default bottleneck assumptions, at any uplift the solver can handle.</li>
+<li><b>S2/S3:</b> with the self-reported 3.5-month doubling, the calibrated or face-value uplift puts AC in <b>Nov 2026</b>, i.e. now, and ASI in Apr 2028. That is at the edge of what METR's "not yet fully autonomous" finding allows.</li>
+<li><b>S4:</b> if METR's "no significant bottlenecks" is read as a weak coding-labor bottleneck, 5.3x uplift is enough. The gap from AC to ASI shrinks to about 1 year (Mar 2027 → Mar 2028).</li>
+<li><b>S5/S6, the ECI anchor:</b> Daniel's mixture never uses the ECI anchor. His ECI threshold for AC (250 Epoch points) implies AC in 2035 (S6-base). Plugging in METR's AECI level and slope moves that to Jun 2032 (S6), 2.7 years earlier. The very different dates from this anchor reflect the ECI-for-AC belief, not METR's data.</li>
+</ul>
+[[IMG:f5_scenario_milestones.png|Milestone dates (AC, SAR, ASI) for each scenario.]]
+[[IMG:f4_uplift.png|Model serial coding multiplier paths for S0, S1, S2 against Anthropic staff self-reported uplift and its fit.]]
+
+[[MC_SECTION]]
+
+<h2>5. Caveats</h2>
+<ul>
+<li><b>Redactions.</b> Anthropic redacted most of the evidence METR relied on: pipeline-level acceleration, algorithmic-progress estimates, R&amp;D inputs, bottleneck analyses and a forecast for a future model. This analysis can only use what was published.</li>
+<li><b>Mapping assumptions.</b> Total acceleration = slope ratio of the model's capability index (ECI is linear in progress). "Acceleration due to AI" = with-AI ÷ human-only progress rate at the same state. These match METR's definitions, but the model's counterfactual (no AI at all, same research stock) may differ from what METR's interviewees had in mind.</li>
+<li><b>Self-reported uplift is not the model's serial coding uplift.</b> METR calls it "very loose evidence" and notes such self-reports can overstate. S2/S3 treat it as an upper-bound reading.</li>
+<li><b>Chart read-offs</b> carry ±0.5 AECI points / ±1 week of error. The refit reproduces METR's slopes to 0.4 pts/yr.</li>
+<li><b>AECI ≠ Epoch ECI.</b> The conversion is a two-parameter linear fit over 8–20 overlapping models; S5/S6 depend on it.</li>
+<li><b>The tension in §2 is unresolved</b>, and it matters for the forecast. If the full 1.9x is real and the model's no-AI baseline is the problem, the dates above are too late. If AECI overstates, the AI-attribution calibration may itself be too aggressive.</li>
+</ul>
+
+<h2>6. Reproduce</h2>
+<p>Everything is in <code>metr-analysis/</code> on the <code>claude/aifm-playground</code> branch:</p>
+<ul>
+<li><code>metr_data.py</code>: all extracted data</li>
+<li><code>metr_obs.py</code>: METR-comparable observables</li>
+<li><code>scenarios.py</code>: deterministic scenarios</li>
+<li><code>run_mc.sh</code> + <code>condition_mc.py</code>: Monte Carlo and conditioning</li>
+<li><code>figures.py</code> / <code>mc_figures.py</code> / <code>build_report.py</code>: figures and this report</li>
+</ul>
+<p>Set up the model first with <code>bash aifm-playground/setup.sh _ext/aifm-public</code>.</p>
